@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Утка-Прыгунья 🦆</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="game-wrapper">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- HUD: сердечки + счёт -->
+        <div id="hud">
+            <div id="hearts">
+                <span class="heart">❤️</span>
+                <span class="heart">❤️</span>
+                <span class="heart">❤️</span>
+            </div>
+            <div id="score-display">0</div>
+        </div>
+
+        <!-- Стартовый экран -->
+        <div id="start-screen" class="overlay">
+            <div class="overlay-content">
+                <div class="title-duck">🦆</div>
+                <h1>Утка-Прыгунья</h1>
+                <p>Тапни чтобы прыгнуть!</p>
+                <p class="hint">Уворачивайся от сталактитов<br>У тебя 3 жизни ❤️</p>
+                <button id="start-btn">Играть!</button>
+            </div>
+        </div>
+
+        <!-- Экран Game Over -->
+        <div id="gameover-screen" class="overlay hidden">
+            <div class="overlay-content">
+                <div class="title-duck">😵</div>
+                <h1>Игра окончена!</h1>
+                <p id="final-score">Счёт: 0</p>
+                <p id="best-score">Лучший: 0</p>
+                <button id="restart-btn">Ещё раз!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

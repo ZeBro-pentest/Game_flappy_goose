@@ -1,0 +1,254 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    touch-action: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0d0d1a;
+    font-family: 'Press Start 2P', cursive;
+}
+
+/* ==========================================
+   Контейнер игры
+   ========================================== */
+#game-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: 800px;
+    max-height: 600px;
+    overflow: hidden;
+    background: #000;
+}
+
+@media (min-width: 821px) {
+    #game-wrapper {
+        border-radius: 16px;
+        box-shadow:
+            0 0 60px rgba(255, 180, 50, 0.2),
+            0 0 120px rgba(255, 100, 0, 0.1),
+            0 30px 80px rgba(0, 0, 0, 0.6);
+    }
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    transition: transform 0.8s ease-in-out;
+}
+
+.inverted #gameCanvas {
+    transform: rotate(180deg);
+}
+
+/* ==========================================
+   HUD: Сердечки и Счёт
+   ========================================== */
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    padding-top: max(12px, env(safe-area-inset-top, 12px));
+    z-index: 5;
+    pointer-events: none;
+}
+
+#hearts {
+    display: flex;
+    gap: 6px;
+}
+
+.heart {
+    font-size: clamp(20px, 5vw, 30px);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.heart.lost {
+    transform: scale(0);
+    opacity: 0;
+}
+
+.heart.hit {
+    animation: heartHit 0.5s ease;
+}
+
+@keyframes heartHit {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(1.5);
+        filter: drop-shadow(0 0 10px #ff0000);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#score-display {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(18px, 5vw, 28px);
+    color: #fff;
+    text-shadow:
+        2px 2px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+/* ==========================================
+   Оверлеи
+   ========================================== */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 10;
+    animation: fadeIn 0.5s ease;
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top, 20px));
+    padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-width: 90%;
+}
+
+.title-duck {
+    font-size: clamp(40px, 12vw, 72px);
+    animation: duckBounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+@keyframes duckBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+.overlay h1 {
+    font-size: clamp(16px, 4.5vw, 28px);
+    color: #ffd700;
+    text-shadow:
+        3px 3px 0 #b8860b,
+        0 0 20px rgba(255, 215, 0, 0.4);
+    text-align: center;
+    line-height: 1.5;
+}
+
+.overlay p {
+    font-size: clamp(9px, 2.5vw, 13px);
+    color: #e0e0e0;
+    text-align: center;
+    line-height: 1.8;
+}
+
+.overlay .hint {
+    font-size: clamp(7px, 2vw, 10px);
+    color: #999;
+}
+
+.overlay button {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(12px, 3.5vw, 16px);
+    padding: 14px 36px;
+    margin-top: 8px;
+    background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%);
+    color: #1a1a2e;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 6px 0 #a86800,
+        0 8px 24px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    pointer-events: all;
+    position: relative;
+    z-index: 20;
+}
+
+.overlay button:active {
+    transform: translateY(4px);
+    box-shadow:
+        0 2px 0 #a86800,
+        0 4px 10px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+#final-score {
+    font-size: clamp(14px, 4vw, 22px);
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+#best-score {
+    font-size: clamp(9px, 2.5vw, 12px);
+    color: #ff8c00 !important;
+}
